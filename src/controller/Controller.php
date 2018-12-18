@@ -36,4 +36,30 @@ class Controller
             'form' => $form
         ];
     }
+
+    public function login()
+    {
+        $form = new LoginForm();
+        $form->setAttributes($_POST);
+
+        if ($form->validate()) {
+            $host  = $_SERVER['HTTP_HOST'];
+            $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            $extra = 'index.php?action=profile';
+            header("Location: http://$host$uri/$extra");
+            exit;
+        }
+
+        return [
+            'view' => 'login',
+            'form' => $form
+        ];
+    }
+
+    public function profile()
+    {
+        return [
+            'view' => 'profile',
+        ];
+    }
 }

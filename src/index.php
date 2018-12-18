@@ -17,10 +17,9 @@ if (isset($_GET['action'])) {
 } else {
     $action = 'index';
 }
-$data = ["action" => $action];
 
 $controller = new Controller();
-$data = array_merge($data, $controller->$action());
+$data = $controller->$action();
 
 if (isset($data['view'])) {
     $data['view'] .= '.php';
