@@ -2,6 +2,8 @@
 
 namespace work\model;
 
+require_once 'UserStorage.php';
+
 use work\model\UserStorage;
 
 /**
@@ -19,16 +21,18 @@ class AuthUser
     {
         session_start();
 
+        var_dump($_SESSION);
+
         if (isset($_SESSION['user_id'])) {
             $user = UserStorage::find($_SESSION['user_id']);
-            if (!$user) {
-                unset($_SESSION['user_id']);
+            if ($user) {
+                return $user;
             }
+            unset($_SESSION['user_id']);
         }
-
         session_write_close();
 
-        return $user;
+        return NULL;
     }
 
 
@@ -36,7 +40,7 @@ class AuthUser
     {
         session_start();
 
-        $id = UserStorage::checkUser($email, $password);
+        $id = UserStorage::checkUser2($email, $password);
 
         if ($id) {
             $_SESSION['user_id'] = $id;

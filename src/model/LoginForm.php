@@ -8,6 +8,9 @@ require_once(__DIR__ . '/../model/Form.php');
  * Description of LoginForm
  *
  * @author Aleksey Shutiy<a.shutiy@gmail.com>
+ *
+ * @property string $email
+ * @property string $password
  */
 class LoginForm extends Form
 {
@@ -21,6 +24,7 @@ class LoginForm extends Form
         parent::validate();
 
         $this->_values['password'] = md5($this->_values['password']);
+        $this->_values['email'] = strtolower($this->_values['email']);
 
         return empty($this->_error);
     }

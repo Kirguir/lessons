@@ -6,6 +6,7 @@ require_once 'controller/Controller.php';
 require_once 'model/Lang.php';
 
 use Work\Controller\Controller;
+use work\model\AuthUser;
 use Work\Model\Lang;
 
 if (isset($_GET['lang'])) {

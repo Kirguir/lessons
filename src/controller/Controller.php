@@ -10,7 +10,9 @@ namespace Work\Controller;
 
 require_once(__DIR__ . '/../model/Storage.php');
 require_once(__DIR__ . '/../model/LoginForm.php');
+require_once(__DIR__ . '/../model/AuthUser.php');
 
+use work\model\AuthUser;
 use Work\Model\Storage;
 use Work\Model\LoginForm;
 
@@ -41,8 +43,10 @@ class Controller
     {
         $form = new LoginForm();
         $form->setAttributes($_POST);
+        $auth = new AuthUser();
 
-        if ($form->validate()) {
+
+        if ($form->validate() && $auth->login($form->email, $form->password)) {
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
             $extra = 'index.php?action=profile';
@@ -58,8 +62,32 @@ class Controller
 
     public function profile()
     {
-        return [
-            'view' => 'profile',
-        ];
+        $auth = new AuthUser();
+
+
+        if ($auth->loggedUser()) {
+            return [
+                'view' => 'profile',
+            ];
+        }
+
+        $host  = $_SERVER['HTTP_HOST'];
+        $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+        $extra = 'index.php';
+        header("Location: http://$host$uri/$extra");
+        exit;
+    }
+
+    public function logout()
+    {
+        $auth = new AuthUser();
+
+        $auth->logout();
+
+        $host  = $_SERVER['HTTP_HOST'];
+        $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+        $extra = 'index.php';
+        header("Location: http://$host$uri/$extra");
+        exit;
     }
 }

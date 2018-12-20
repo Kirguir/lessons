@@ -6,6 +6,7 @@ use Work\Model\Lang;
 
 ?>
 <div class="container">
+    <?= var_dump($form->errors()) ?>
     <div class="row col-sm-6">
         <form class="form-horizontal" method="POST" action="index.php?action=login" id="registration-form"
               enctype="multipart/form-data" onsubmit="return checkForm()">
